@@ -1,0 +1,13 @@
+.main-admin{
+    margin-top: 2%;
+}
+
+body{
+    position: relative;
+}
+
+.update{
+    position: absolute;
+    top: 50;
+    display: none;
+}
