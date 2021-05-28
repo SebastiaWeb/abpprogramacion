@@ -14,8 +14,10 @@ if(isset($_SESSION['login'])){
    $email = $_POST['emaillgn'];
    $pass = $_POST['passwordlgn'];
 
-   $mysql = "SELECT name,apellidos,email,pass FROM CLIENTE;";
+//    Consulta a mysql
+   $mysql = "SELECT nombre,apellidos,email,pass FROM clientes;";
 
+//    Se hace hace la consulta 
    $response = mysqli_query($coon, $mysql);
 
    if($response){
@@ -24,11 +26,12 @@ if(isset($_SESSION['login'])){
         foreach($response as $row){
 
         //  verificamos la contrasena pasandole el password y hash de la base de datos
+        // No funciona la verificacion ver si en la tabla cliente, la columna password debe de tener de lonsgitud 255
             $verify = password_verify($pass, $row['pass']);
 
             if($email == $row['email'] && $verify){
                 $_SESSION['login'] = true;
-                $_SESSION['user'] = $row['name'].' '.$row['apellidos'];
+                $_SESSION['user'] = $row['nombre'].' '.$row['apellidos'];
 
             // Para utilizar la cookie se utiliza
             //  setcookie(name, valor, time() + tiempo, "/" <-  para poder utilizar la cookie en el directorio riaz)
@@ -39,9 +42,9 @@ if(isset($_SESSION['login'])){
                 header("Location: ../index.php");
 
             }else{
-                
-            //  Si no, nos redirigimos a la pagina principal
-                header("Location: ../index.php");
+                echo 'Error al iniciar sesion';
+                echo "Error: " . $mysql . "<br>" . mysqli_error($coon);
+                // header("Location: ../login.php");
             }
         }
 
@@ -56,6 +59,7 @@ if(isset($_SESSION['login'])){
 
 //Verificacion del registro
 if(isset($_SESSION['singup'])){
+    // unset($_SESSION['login']);
 
 //  Obtenemos los datos del formulario de registro
     $dni = $_POST['dni'];
@@ -68,14 +72,12 @@ if(isset($_SESSION['singup'])){
 
 //  Encriptamos la password
 //  password_hash(password, PASSWORD_BCRYPT, cuentas veces va hacerlo ['cost=>4'])
-    $password = password_hash($password, PASSWORD_BCRYPT, ['cost=>4']);
+    $passw = password_hash($password, PASSWORD_BCRYPT, ['cost=>4']);
 
-
-    // INSERT INTO `CLIENTE` (`dni`, `phone`, `street`, `fechaBuy`, `totalFactura`, `pass`, `email`, `name`, `apellidos`) 
-    // VALUES ('1', '1', '1', NULL, NULL, '1', '1', '500', '1'); 
 
 //  Mandamos todos los datos a la base de datos    
-    $mysql = "INSERT INTO `CLIENTE` (`dni`, `phone`, `street`, `fechaBuy`, `totalFactura`, `pass`, `email`, `name`, `apellidos`) VALUES ('$dni', '$phone', '$street', NULL, NULL, '$password', '$email', '$name', '$apellidos');"; 
+    $mysql = "INSERT INTO `clientes` (`dni`, `phone`, `street`, `pass`, `email`, `nombre`, `apellidos`) 
+                VALUES  ('$dni', '$phone', '$street', '$passw', '$email', '$name', '$apellidos');"; 
 
     $response = mysqli_query($coon, $mysql);
 
@@ -86,9 +88,14 @@ if(isset($_SESSION['singup'])){
 
     }else{
         echo 'peticon mala ';
-        echo "Error: " . $mysql . "<br>" . mysqli_error($conn);
+        echo "Error: " . $mysql . "<br>" . mysqli_error($coon);
     }
+
+    session_destroy();
 }
+
+// --------------------------------------------
+// Cerrar session
 
 if(isset($_COOKIE['logout'])){
     setcookie("login", '', time() - 86400, "/"); 

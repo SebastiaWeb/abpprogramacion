@@ -1,17 +1,14 @@
 <?php 
     include './php/conection.php';
 
-    session_start();
-    
     // $result = mysqli_query($coon, 'select * from ADMINISTRADOR');
     
-    $advertencia = isset($_GET['advertencia']) ? $_GET['advertencia']:null;
+    $advertencia = $_GET['advertencia'];
     $advertencia = (boolean) $advertencia;
 
-    $warning = isset($_GET['warning']) ? $_GET['warning']:null;
+    $warning = $_GET['warning'];
     $warning = (boolean) $warning;
-    $_SESSION['pass'] = 'admin';
-    $_SESSION['user'] = 'admin';
+
 ?>
 
 <!DOCTYPE html>

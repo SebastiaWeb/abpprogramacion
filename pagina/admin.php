@@ -1,26 +1,26 @@
 <?php 
     include './php/conection.php';
-    session_start();
 
-    $user = $_SESSION['user'];
-    $pass = $_SESSION['pass'];
 
-    // if(isset($_GET['alert'])){
-    //     $user = 'admin';
-    //     $pass = 'admin';
-    // }
-    // if(isset($_GET['delite'])){
-    //     $user = 'admin';
-    //     $pass = 'admin';
-    // }
-    // if(isset($_GET['add'])){
-    //     $user = 'admin';
-    //     $pass = 'admin';
-    // }
-    // if($_GET['edit']){
-    //     $user = 'admin';
-    //     $pass = 'admin';
-    // }
+    $user = $_POST['user'];
+    $pass = $_POST['pass'];
+
+    if($_GET['alert']){
+        $user = 'admin';
+        $pass = 'admin';
+    }
+    if($_GET['delite']){
+        $user = 'admin';
+        $pass = 'admin';
+    }
+    if($_GET['add']){
+        $user = 'admin';
+        $pass = 'admin';
+    }
+    if($_GET['edit']){
+        $user = 'admin';
+        $pass = 'admin';
+    }
 
     $advertencia = 'true';
     $warning = 'false';
@@ -48,8 +48,6 @@
         header ('Location: ./login.php?advertencia='.$advertencia);
         exit();
     }
-
-
 ?>
 
 
@@ -86,40 +84,31 @@
                     <input type="text" name="memPrincipal" class="form-control" placeholder="Memoria Principal">
                 </p>
                 <?php 
-                    $key = isset($_SESSION['alert']) ? $_SESSION['alert']:false;
+                    $key = $_GET['alert'];
                     if($key){?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             Rellena todos los campos.
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                   <?php unset($_SESSION['alert']); }?> 
-
-                   <?php 
-                    $key = isset($_SESSION['img']) ? $_SESSION['img']:false;
-                    if($key){?>
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            Falta la imagen.
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                   <?php unset($_SESSION['img']); }?> 
+                   <?php }?> 
 
                     <?php 
-                    $error = isset($_SESSION['error']) ? $_SESSION['error']:false;
+                    $error = $_GET['error'];
                     if($error){?>
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             Hubo un error al cargar tus datos - RECUERDA NO PUEDES REPETIR EL CODIGO DEL PRODUCTO
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                   <?php unset($_SESSION['error']); }?> 
+                   <?php }?> 
 
                    <?php 
-                    $add = isset($_SESSION['add']) ? $_SESSION['add']:false;
+                    $add = $_GET['add'];
                     if($add){?>
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             AGREGADO CORRECTAMENTE A LA BASE DE DATOS
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
-                   <?php unset($_SESSION['add']); }?> 
+                   <?php }?> 
                 
                 <input type="submit" name="add" class="btn btn-success col-5 mt-4" value="Add"></input>
             </form>
@@ -142,7 +131,7 @@
                             <td><?php echo $row['cod_cpu'];?></td>
                             <td><?php echo $row['modelo'];?></td>
                             <td colspan="1"><?php echo $row['mem_principal'];?></td> 
-                            <td colspan="2"><a class="btn btn-warning btnUpdate" href="./php/edit.php"<?php $_SESSION['id'] = $row['cod_cpu'];?>>Update</a><a href="./php/delit.php" <?php $_SESSION['id'] = $row['cod_cpu'];?> class="btn btn-danger">Delete</a></td>
+                            <td colspan="2"><a class="btn btn-warning btnUpdate" href="./php/edit.php?id=<?php echo $row['cod_cpu'];?>">Update</a><a href="./php/delit.php?id=<?php echo $row['cod_cpu'];?>" class="btn btn-danger">Delete</a></td>
                         </tr>
                     <?php }?>
                     </tbody>
@@ -150,7 +139,9 @@
             </section>
         </div>
         <form class="container col-6 mx-auto mt-5" action="./php/add.php" method="POST">
-                
+            
+            
+            
         </form>
     </main>
 

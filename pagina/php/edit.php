@@ -1,10 +1,9 @@
     <?php 
         include './conection.php';
-        
+        $id = $_GET['id'];
         session_start();
-
-        $id = $_SESSION['id'];
-
+        $_SESSION['id']  = $id;
+        $_SESSION['instante']   = time();
         $result = mysqli_query($coon,"SELECT * FROM CPU");
         $modelo;
         $memPrincipal;
@@ -19,12 +18,13 @@
             if(isset($_POST['edit'])){
                 $modelo = $_POST['modelo'];
                 $memPrincipal = $_POST['memPrincipal'];
-                $id = $_SESSION['id'];
+                $id = $_GET['id'];
 
                 $update = mysqli_query($coon, "update CPU set modelo = '$modelo', mem_principal = '$memPrincipal' where CPU.cod_cpu = '$id'");
 
                 if($update){
-                    header('Location: ../admin.php');
+                    echo ' correcto'.' '.$_GET['id'];
+                    header('Location: ../admin.php?edit=true');
                 }else {
                     echo 'incorrecto';
                 }
@@ -39,7 +39,7 @@
     </head>
     
     <div class="update container-xl position-absolute">
-            <form class="main-admin__add col" enctype='multipart/form-data' method="POST">
+            <form class="main-admin__add col" enctype='multipart/form-data' action="<?php echo htmlspecialchars($_SERVER['PHP_SELF?id']);?>" method="POST">
                     <h3>EDITAR PRODUCTO</h3>
                     <p>
                         <label for="imagen">Imagen:</label>
