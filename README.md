@@ -1,4 +1,4 @@
-# abpprogramacion
+# ABP programacion
 
 Proyecto de aprendizaje basado en problema.
 
