@@ -18,3 +18,5 @@ Si quieres probar el funcionamiento aqui tedejo algunos datos.
 * Cvv: 123
 * Estado: Aceptada
 * Response: Aceptada
+
+Todos los datos son de prueba incluyendo la pasarela de pago
